@@ -1,7 +1,7 @@
 import { qs, qsa, log } from './utility.js'
 
+/* 유효성검사-------------------------------------------------------- */
 export const registerValidate = (bookArr, category, bookName, bookPrice) => {
-  console.log(bookArr);
   if (!category) {
     alert('카테고리를 선택하세요')
     return false
@@ -21,11 +21,13 @@ export const registerValidate = (bookArr, category, bookName, bookPrice) => {
   return true
 }
 
+/* 도서등록-------------------------------------------------------- */
 export const registerBook = (bookArr, category, bookName, bookPrice) => {
   let id = Date.now()
   bookArr.push({ id, category, bookName, bookPrice })
 }
 
+/* 도서목록출력-------------------------------------------------------- */
 export const printBookArr = (bookArr) => {
   qs('#book-list-tbody').innerHTML = ''
   bookArr.forEach(book => {
@@ -39,27 +41,35 @@ export const printBookArr = (bookArr) => {
         <td><button value="${id}">삭제</button></td> 
       </tr>
     `)
-    bindDeleteHandler(bookArr)
   })
+  bindDeleteHandler(bookArr)
 }
 
+/* 도서삭제버튼 이벤트 추가------------------------------------------- */
 export const bindDeleteHandler = (bookArr) => {
   qsa('#book-list-tbody button').forEach(btn => {
     btn.addEventListener('click', e => {
       let id = parseInt(e.target.value)
-      let idx = bookArr.findIndex(book => book.id === id)
+      let idx = bookArr.findIndex(book => {
+        console.log(book.id, id)
+        return book.id === id
+      })
       bookArr.splice(idx, 1)
       printBookArr(bookArr)
     })
   })
 }
 
+/* 가격 정렬-------------------------------------------------------- */
 export const sortArr = (copyArr, sortby) => {
   copyArr.sort((a, b) => {
     return (sortby === 'ascending') ? a.bookPrice - b.bookPrice : b.bookPrice - a.bookPrice
   })
 }
 
+/* 검색 기능-------------------------------------------------------- */
 export const searchArr = (bookArr, keyword) => {
-  return bookArr.filter(book => book.bookName.includes(keyword))
+  let copyArr = [...bookArr]
+  copyArr = copyArr.filter(book => book.bookName.includes(keyword))
+  printBookArr(copyArr)  
 }

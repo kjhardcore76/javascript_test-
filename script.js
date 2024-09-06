@@ -8,12 +8,10 @@ qs('#register-btn').addEventListener('click', e=> {
   let bookName = qs('#bookname').value
   let bookPrice = parseInt(qs('#bookprice').value)
   let validated = registerValidate(bookArr, category, bookName, bookPrice)
-  console.log(validated);
   if(!validated) return
   registerBook(bookArr, category,bookName,bookPrice)
   printBookArr(bookArr)
 })
-
 
 qs('#sort-select').addEventListener('change', e=>{
   let copyArr = [...bookArr]
@@ -24,6 +22,5 @@ qs('#sort-select').addEventListener('change', e=>{
 
 qs('#search-btn').addEventListener('click', e => {
   let keyword = qs('#search-input').value
-  const resultArr = searchArr(bookArr, keyword)
-  printBookArr(resultArr)  
+  searchArr(bookArr, keyword)
 })
